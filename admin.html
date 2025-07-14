@@ -1,0 +1,1173 @@
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Urbanist', sans-serif;
+        background: #1E1E1E; /* Dark background for contrast */
+        margin: 0;
+        padding: 0;
+        color: #FFFFFF; /* White text for readability */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .admin-header {
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+        border-bottom: 3px solid #4CAF50; /* Green accent border */
+        backdrop-filter: blur(20px);
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        color: #4CAF50; /* Green text for headers */
+    }
+
+    .admin-container {
+        width: 90%;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        gap: 20px;
+        flex: 1;
+    }
+
+    .stats-container {
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .stats-box {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+        padding: 20px;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        min-width: 150px;
+        max-width: 200px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stats-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .stats-box h3 {
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: #4CAF50; /* Green for headers */
+        margin: 0;
+    }
+
+    .stats-box p {
+        font-size: 1.2rem;
+        margin: 0;
+        color: #ffffff; /* White for text */
+    }
+
+    .graph-container {
+        width: 100%; /* Full width for better readability */
+        background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        height: auto;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px; /* Added margin between graphs */
+    }
+
+    .graph-container h2 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #4CAF50; /* Green for headers */
+    }
+
+    .graphs-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        gap: 20px; /* Added gap between graphs */
+    }
+
+    canvas {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 400px;
+    }
+
+    .tab-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .tab-button {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #FFFFFF;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .tab-button.active {
+        background: #4CAF50; /* Green for active tab */
+        color: #FFFFFF;
+    }
+
+    .tab-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .summary-container {
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .summary-box {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        flex: 1;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-box h3 {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #4CAF50; /* Green for headers */
+        margin: 0;
+    }
+
+    .summary-box p {
+        font-size: 1.2rem;
+        margin: 0;
+        color: #FFFFFF; /* White for text */
+    }
+
+    canvas {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 400px;
+    }
+
+    .product-section {
+        margin-bottom: 30px;
+    }
+
+    .product-section h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #4CAF50; /* Green for headers */
+        margin-bottom: 10px;
+    }
+
+    .add-products-container {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .add-products-container h2 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #4CAF50; /* Green for headers */
+        margin-bottom: 15px;
+    }
+
+    .add-products-container label {
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+        color: #4CAF50; /* Green for labels */
+    }
+
+    .add-products-container input,
+    .add-products-container select,
+    .add-products-container button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 0.9rem;
+        background: rgb(255, 255, 255);
+        color: #000000; /* White text */
+        transition: background 0.3s ease;
+    }
+
+    .add-products-container input:focus,
+    .add-products-container select:focus,
+    .add-products-container button:focus {
+        background: rgba(255, 255, 255, 0.2);
+        outline: none;
+    }
+
+    .add-products-container button {
+        background: #4CAF50; /* Green for buttons */
+        color: #FFFFFF; /* White text */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .add-products-container button:hover {
+        background: #388E3C; /* Darker green on hover */
+        transform: translateY(-2px);
+    }
+
+/* Existing Products Container */
+.existing-products-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.existing-products-container h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4CAF50; /* Green for headers */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Product Section */
+.product-section {
+    margin-bottom: 30px;
+}
+
+.product-section h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4CAF50; /* Green for headers */
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+/* Subcategory Styling */
+.subcategory {
+    margin-bottom: 25px;
+}
+
+.subcategory-header {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4CAF50; /* Green for subcategory headers */
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Product List (Side-Scrolling) */
+.product-list {
+    display: flex;
+    gap: 15px;
+    padding: 10px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4CAF50 #2a2a2a;
+}
+
+.product-list::-webkit-scrollbar {
+    height: 8px;
+}
+
+.product-list::-webkit-scrollbar-thumb {
+    background-color: #4CAF50;
+    border-radius: 4px;
+}
+
+.product-list::-webkit-scrollbar-track {
+    background-color: #2a2a2a;
+}
+
+/* Product Card (Smaller Size) */
+.product-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 0 0 auto;
+    width: 150px; /* Smaller width */
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.product-card img {
+    width: 130px;
+    height: 130px; /* Smaller image height */
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.product-card h3 {
+    font-size: 0.9rem; /* Smaller font size */
+    margin: 0;
+    color: #4CAF50; /* Green for headers */
+}
+
+.product-card p {
+    font-size: 0.8rem; /* Smaller font size */
+    margin: 5px 0;
+    color: #FFFFFF; /* White for text */
+}
+
+.product-card button {
+    background: #4CAF50; /* Green for buttons */
+    color: #FFFFFF; /* White text */
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 0.8rem; /* Smaller font size */
+}
+
+.product-card button:hover {
+    background: #388E3C; /* Darker green on hover */
+    transform: translateY(-2px);
+}
+
+
+
+    /* Login Overlay Styles */
+    #login-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(30, 30, 30, 0.9); /* Dark semi-transparent background */
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+    }
+
+    #login-overlay .login-container {
+        display: flex;
+        background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0px 50px 30px 10px rgba(0, 0, 0, 0.3);
+        max-width: 800px;
+        width: 90%;
+    }
+
+    #login-overlay .login-image {
+        flex: 1;
+        background: url('./assets/weed.jpg') no-repeat center center/cover;
+    }
+
+    #login-overlay .login-form {
+        flex: 1;
+        padding: 30px;
+        text-align: center;
+    }
+
+    #login-overlay h2 {
+        color: #4CAF50; /* Green for headers */
+        font-size: 40px;
+        margin-bottom: 20px;
+    }
+
+    #login-overlay input {
+        padding: 10px;
+        margin: 10px 0;
+        width: 100%;
+        border-radius: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.1);
+        color: #FFFFFF; /* White text */
+        transition: background 0.3s ease;
+    }
+
+    #login-overlay input:focus {
+        background: rgba(255, 255, 255, 0.2);
+        outline: none;
+    }
+
+    #login-overlay button {
+        margin-top: 20px;
+        width: 120px;
+        height: 30px;
+        font-size: 17px;
+        background: #4CAF50; /* Green for buttons */
+        color: #FFFFFF; /* White text */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #login-overlay button:hover {
+        background: #388E3C; /* Darker green on hover */
+        transform: translateY(-5px);
+    }
+
+    #error-message {
+        color: #FF0000; /* Red for error messages */
+        margin-top: 10px;
+        display: none;
+    }
+
+    .reset-sales-data {
+        background: #FF0000; /* Red for reset button */
+        width: 100%;
+        font-size: 15px;
+        color: #FFFFFF; /* White text */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .reset-sales-data:hover {
+        background: #a90000; /* Darker red on hover */
+        transform: translateY(-2px);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+ /* Media Queries for Responsive Layout */
+ @media (min-width: 768px) {
+        .graph-container {
+            width: 48%;
+        }
+
+        .graphs-wrapper {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+    }
+    .returnbutton {
+        width: 150px;
+        height:30px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        background-color: red;
+    }
+    .returnbutton:hover{
+        transition: .2s;
+        box-shadow: rgba(255, 255, 255, 0.568) 0px 5px 5px;
+    }
+    .cash-up-button{
+        background: #4CAF50; /* Red for reset button */
+        width: 100%;
+        font-size: 15px;
+        color: #FFFFFF; /* White text */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login Overlay -->
+    <div id="login-overlay">
+        <div class="login-container">
+            <div class="login-image"></div>
+            <div class="login-form">
+                <h2>Admin Login</h2>
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <button onclick="checkLogin()">Login</button>
+                <p id="error-message">Invalid username or password.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-header" style="display: none;">
+        <h1 class="admin-heading">Admin Panel</h1>
+        <a href="index.html"><button class="returnbutton">Go to POS</button></a>
+    </div>
+    <div class="admin-container" style="display: none;">
+        <!-- Stats Boxes -->
+        <div class="stats-container">
+            <div class="stats-box">
+                <h3>GRAMS DISTRIBUTED</h3>
+                <p id="total-sales">0</p>
+            </div>
+            <div class="stats-box">
+                <h3>INCOME</h3>
+                <p id="total-revenue">0.00</p>
+            </div>
+            <div class="stats-box">
+                <h3>Customers</h3>
+                <p id="total-customers">0</p>
+            </div>
+            <div class="stats-box">
+                <h3>Average Spend</h3>
+                <p id="average-spend">R0.00</p>
+            </div>
+            <div class="stats-box">
+                <h3>Total Card Sales</h3>
+                <p id="total-card-sales">R0.00</p>
+            </div>
+            <div class="stats-box">
+                <h3>Total Cash Sales</h3>
+                <p id="total-cash-sales">R0.00</p>
+            </div>
+        </div>
+
+        <!-- Graphs Wrapper -->
+        <div class="graphs-wrapper">
+            <!-- Weed Sales Graph -->
+            <div class="graph-container">
+                <h2>Cannabis Distributed</h2>
+                <canvas id="weedSalesChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <button class="reset-sales-data" onclick="resetSalesData()">Reset Sales Data</button>
+        <button class="cash-up-button" onclick="generateCashUpPDF()">Cash Up</button>
+
+        <!-- Add Product Form -->
+        <div class="add-products-container">
+            <h2>Add New Product</h2>
+            <form id="addProductForm">
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
+
+                <label for="productType">Product Type:</label>
+                <select id="productType" name="productType" required onchange="toggleSubcategory()">
+                    <option value="weed">Cannabis</option>
+                </select>
+
+                <!-- Subcategory for Weed -->
+                <div id="weedSubcategory">
+                    <label for="weedCategory">Cannabis Category:</label>
+                    <select id="weedCategory" name="weedCategory" onchange="updatePriceLabel()">
+                        <option value="strain">Cannabis Strain</option>
+                        <option value="edible">Edible</option>
+                        <option value="weed_accessory">Accessory</option>
+                    </select>
+                </div>
+
+                <!-- Price Label -->
+                <label for="productPrice" id="priceLabel">Price per Gram (R):</label>
+                <input type="number" id="productPrice" name="productPrice" step="0.01" required>
+
+                <label for="productImage">Product Image:</label>
+                <input type="file" id="productImage" name="productImage" accept="image/*" required>
+
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+
+        <!-- Existing Products -->
+        <div class="existing-products-container">
+            <h2>Existing Products</h2>
+            
+            <!-- Cannabis Products Section -->
+            <div class="product-section">
+                
+                <!-- Strains -->
+                <div class="subcategory">
+                    <h4 class="subcategory-header">Strains</h4>
+                    <div class="product-list" id="weedStrainsList"></div>
+                </div>
+                
+                <!-- Edibles -->
+                <div class="subcategory">
+                    <h4 class="subcategory-header">Edibles</h4>
+                    <div class="product-list" id="weedEdiblesList"></div>
+                </div>
+                
+                <!-- Weed Accessories -->
+                <div class="subcategory">
+                    <h4 class="subcategory-header">Accessories</h4>
+                    <div class="product-list" id="weedAccessoriesList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hardcoded username and password
+        const hardcodedUsername = "1";
+        const hardcodedPassword = "1";
+
+        // Global sales data
+ let salesData = {
+    totalSales: parseInt(localStorage.getItem("totalSales")) || 0,
+    totalRevenue: parseFloat(localStorage.getItem("totalRevenue")) || 0,
+    totalCustomers: parseInt(localStorage.getItem("totalCustomers")) || 0,
+    totalGramsSold: parseFloat(localStorage.getItem("totalGramsSold")) || 0,
+    totalCardSales: parseFloat(localStorage.getItem("totalCardSales")) || 0,
+    totalCashSales: parseFloat(localStorage.getItem("totalCashSales")) || 0,
+    weedSalesData: JSON.parse(localStorage.getItem("weedSalesData")) || new Array(24).fill(0)
+};
+
+// Also check for any existing latestSale on page load
+window.onload = function() {
+    updatePriceLabel();
+    checkForNewSales(); // Check for pending sales immediately
+    updateUI();
+    loadExistingProducts();
+};
+
+        // Chart.js instance
+        let weedSalesChart;
+
+        // Check login credentials
+        function checkLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === hardcodedUsername && password === hardcodedPassword) {
+                document.getElementById("login-overlay").style.display = "none";
+                document.querySelector(".admin-header").style.display = "block";
+                document.querySelector(".admin-container").style.display = "flex";
+                initializeCharts();
+                loadExistingProducts();
+                updateUI();
+                checkForNewSales();
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        }
+
+        // Initialize Chart.js graph
+        function initializeCharts() {
+            const weedCtx = document.getElementById('weedSalesChart').getContext('2d');
+            weedSalesChart = new Chart(weedCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
+                    datasets: [{
+                        label: 'Cannabis Customers',
+                        data: salesData.weedSalesData,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true },
+                        x: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+ 
+
+
+async function generateCashUpPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+
+  doc.setFont("helvetica", "normal");
+
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString();
+  const formattedTime = now.toLocaleTimeString();
+
+  // --- PAGE 1 HEADER & SUMMARY ---
+  doc.setFontSize(12);
+  doc.text(`Date: ${formattedDate}`, 130, 20);
+  doc.text(`Time: ${formattedTime}`, 130, 30);
+
+  doc.setFontSize(18);
+  doc.text('Daily Cash Up Report', 10, 50);
+
+  doc.setFontSize(12);
+  doc.text(`Total Grams Sold: ${salesData.totalGramsSold.toFixed(2)}`, 10, 70);
+  doc.text(`Total Revenue: R${salesData.totalRevenue.toFixed(2)}`, 10, 80);
+  doc.text(`Total Customers: ${salesData.totalCustomers}`, 10, 90);
+  doc.text(`Average Spend: R${calculateAverageSpend().toFixed(2)}`, 10, 100);
+  doc.text(`Total Card Sales: R${salesData.totalCardSales.toFixed(2)}`, 10, 110);
+  doc.text(`Total Cash Sales: R${salesData.totalCashSales.toFixed(2)}`, 10, 120);
+
+  // Add graph image below stats
+  const graphContainer = document.querySelector('.graph-container');
+  const graphCanvas = await html2canvas(graphContainer, { scale: 2 });
+  const graphImg = graphCanvas.toDataURL('image/png');
+  doc.addImage(graphImg, 'PNG', 10, 140, 180, 100);
+
+  // --- PRODUCTS SOLD TODAY GRID ---
+  const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+  const todayStr = new Date().toLocaleDateString();
+  const todaySales = transactions.filter(sale => {
+    const saleDate = new Date(sale.time).toLocaleDateString();
+    return saleDate === todayStr;
+  });
+
+  // Aggregate product quantities
+  const productTotals = {};
+  todaySales.forEach(sale => {
+    sale.products.forEach(item => {
+      productTotals[item.name] = (productTotals[item.name] || 0) + item.quantity;
+    });
+  });
+
+  // Draw "Products Sold Today" title
+  let startY = 250;
+  doc.setFontSize(14);
+  doc.text("Products Sold Today", 10, startY);
+  startY += 8;
+  doc.setFontSize(12);
+
+  // Layout 3 columns grid
+  const colCount = 3;
+  const colWidth = 60;
+  const rowHeight = 7;
+  const marginLeft = 10;
+  let x = marginLeft;
+  let y = startY;
+  let colIndex = 0;
+
+  const productsArray = Object.entries(productTotals).sort((a, b) => a[0].localeCompare(b[0]));
+
+  for (let i = 0; i < productsArray.length; i++) {
+    const [name, qty] = productsArray[i];
+    doc.text(`${name} x${qty}`, x, y);
+
+    colIndex++;
+    if (colIndex >= colCount) {
+      colIndex = 0;
+      x = marginLeft;
+      y += rowHeight;
+    } else {
+      x += colWidth;
+    }
+
+    // If near bottom of page, add page for overflow
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+      doc.setFontSize(14);
+      doc.text("Products Sold Today (Continued)", 10, y);
+      y += 8;
+      doc.setFontSize(12);
+      x = marginLeft;
+      colIndex = 0;
+    }
+  }
+
+  // --- PAGE 2: DETAILED TRANSACTIONS TABLE ---
+  doc.addPage();
+
+  // Top text fields for manual entry
+  doc.setFontSize(12);
+  doc.text("Name: ____________________________", 10, 15);
+  doc.text("Date: ____________________________", 130, 15);
+
+  // Table header
+  const headerY = 30;
+  const rowHeightDetail = 6;
+  const tableLeft = 10;
+  const tableRight = 200;
+
+  // Columns setup
+  const columns = [
+    { title: 'Rolling Class', x: 10, width: 50 },
+    { title: 'Strain Education', x: 60, width: 50 },
+    { title: 'Rig Education', x: 110, width: 50 },
+    { title: 'Total', x: 160, width: 40 },
+  ];
+
+  doc.setFontSize(14);
+  columns.forEach(col => {
+    doc.text(col.title, col.x + 2, headerY - 2);
+  });
+
+  doc.setLineWidth(0.2);
+
+  // Draw table grid lines (header + 50 rows)
+  const rowsCount = 50;
+  const tableTop = headerY;
+  const tableBottom = tableTop + rowHeightDetail * rowsCount;
+
+  // Horizontal lines (header + rows)
+  for (let i = 0; i <= rowsCount; i++) {
+    const yLine = tableTop + i * rowHeightDetail;
+    doc.line(tableLeft, yLine, tableRight, yLine);
+  }
+
+  // Vertical lines (columns + outer border)
+  doc.line(tableLeft, tableTop, tableLeft, tableBottom);
+  doc.line(tableRight, tableTop, tableRight, tableBottom);
+
+  columns.forEach(col => {
+    if (col !== columns[columns.length - 1]) {
+      doc.line(col.x + col.width, tableTop, col.x + col.width, tableBottom);
+    }
+  });
+
+  // Fill table rows with transactions data
+  doc.setFontSize(10);
+  let yRow = headerY + rowHeightDetail - 2;
+  const maxRows = rowsCount;
+
+  // Helper: build display string for each category with bundle logic for rolling
+  function buildCategoryString(map, type) {
+    let parts = [];
+    for (const [price, qty] of Object.entries(map)) {
+      if (type === "rolling") {
+        if (price == 30 && qty >= 4) {
+          const sets = Math.floor(qty / 4);
+          const rem = qty % 4;
+          if (sets > 0) parts.push(`${sets}x100`);
+          if (rem > 0) parts.push(`${rem}x30`);
+        } else if (price == 50 && qty >= 4) {
+          const sets = Math.floor(qty / 4);
+          const rem = qty % 4;
+          if (sets > 0) parts.push(`${sets}x150`);
+          if (rem > 0) parts.push(`${rem}x50`);
+        } else {
+          parts.push(`${qty}x${parseFloat(price)}`);
+        }
+      } else {
+        parts.push(`${qty}x${parseFloat(price)}`);
+      }
+    }
+    return parts.join(' - ') || '-';
+  }
+
+  for (let i = 0; i < maxRows; i++) {
+    if (i < todaySales.length) {
+      const sale = todaySales[i];
+
+      let rollingMap = {}, strainMap = {}, rigMap = {}, edibleMap = {};
+      let totalPrice = 0;
+
+      sale.products.forEach(p => {
+        const price = parseFloat(p.totalPrice) / parseFloat(p.quantity);
+        const name = p.name.toLowerCase();
+        let categoryMap;
+
+        if (name.includes("joint") || name.includes("pre roll")) {
+          categoryMap = rollingMap;
+        } else if (name.includes("rig") || name.includes("bong") || name.includes("dab") || name.includes("pipe") || p.type === "weed_accessory") {
+          categoryMap = rigMap;
+        } else if (name.includes("edible")) {
+          categoryMap = edibleMap;
+        } else {
+          categoryMap = strainMap;
+        }
+
+        categoryMap[price] = (categoryMap[price] || 0) + p.quantity;
+      });
+
+      // Compute total price with special bundle rules for rolling
+      for (const [price, qty] of Object.entries(rollingMap)) {
+        const p = parseFloat(price);
+        if (price == 30 && qty >= 4) {
+          const sets = Math.floor(qty / 4);
+          const rem = qty % 4;
+          totalPrice += (sets * 100) + (rem * p);
+        } else if (price == 50 && qty >= 4) {
+          const sets = Math.floor(qty / 4);
+          const rem = qty % 4;
+          totalPrice += (sets * 150) + (rem * p);
+        } else {
+          totalPrice += qty * p;
+        }
+      }
+      [rigMap, strainMap, edibleMap].forEach(map => {
+        for (const [price, qty] of Object.entries(map)) {
+          totalPrice += qty * parseFloat(price);
+        }
+      });
+
+      const rollingStr = buildCategoryString(rollingMap, "rolling");
+      const strainStr = [buildCategoryString(strainMap), buildCategoryString(edibleMap)].filter(s => s !== '-').join(' - ') || '-';
+      const rigStr = buildCategoryString(rigMap);
+      const payIcon = sale.paymentMethod === "cash" ? "V" : "*";
+      const totalStr = `${totalPrice.toFixed(2)} ${payIcon}`;
+
+      // Write data to columns
+      doc.text(rollingStr, columns[0].x + 2, yRow);
+      doc.text(strainStr, columns[1].x + 2, yRow);
+      doc.text(rigStr, columns[2].x + 2, yRow);
+      doc.text(totalStr, columns[3].x + 2, yRow);
+    }
+    yRow += rowHeightDetail;
+  }
+
+  // --- Draw green line below last sale ---
+  if (todaySales.length > 0) {
+    const lineY = headerY + todaySales.length * rowHeightDetail;
+    doc.setDrawColor(0, 128, 0);
+    doc.setLineWidth(0.8);
+    doc.line(tableLeft, lineY, tableRight, lineY);
+
+    // Write totals aligned inside table columns
+    const totalsY = lineY + 6;
+    doc.setFontSize(12).setTextColor(0,0,0).setFont("helvetica","normal");
+
+    doc.text(`${salesData.totalCardSales.toFixed(2)} *`, columns[1].x + 2, totalsY);
+    doc.text(`${salesData.totalCashSales.toFixed(2)} V`, columns[2].x + 2, totalsY);
+    doc.setFont(undefined, 'bold');
+    doc.text(`${(salesData.totalCardSales + salesData.totalCashSales).toFixed(2)} T`, columns[3].x + 2, totalsY);
+    doc.setFont(undefined, 'normal');
+  }
+
+  // Save the file
+  doc.save(`cash_up_report_${formattedDate.replace(/\//g, '-')}.pdf`);
+}
+
+
+
+        
+
+
+
+        // Update the UI
+        function updateUI() {
+            document.getElementById("total-sales").textContent = salesData.totalGramsSold.toFixed(2);
+            document.getElementById("total-revenue").textContent = `R${salesData.totalRevenue.toFixed(2)}`;
+            document.getElementById("total-customers").textContent = salesData.totalCustomers;
+            document.getElementById("average-spend").textContent = `R${calculateAverageSpend().toFixed(2)}`;
+            document.getElementById("total-card-sales").textContent = `R${salesData.totalCardSales.toFixed(2)}`;
+            document.getElementById("total-cash-sales").textContent = `R${salesData.totalCashSales.toFixed(2)}`;
+
+            weedSalesChart.data.datasets[0].data = salesData.weedSalesData;
+            weedSalesChart.update();
+        }
+
+        function calculateAverageSpend() {
+            return salesData.totalCustomers === 0 ? 0 : salesData.totalRevenue / salesData.totalCustomers;
+        }
+
+        // Update stats on sale
+function updateStatsOnSale(saleData) {
+    salesData.totalSales += 1;
+    salesData.totalRevenue += parseFloat(saleData.totalAmount);
+    salesData.totalCustomers += 1;
+    salesData.totalGramsSold += parseFloat(saleData.gramsSold);
+
+    if (saleData.paymentMethod === "card") {
+        salesData.totalCardSales += parseFloat(saleData.totalAmount);
+    } else {
+        salesData.totalCashSales += parseFloat(saleData.totalAmount);
+    }
+
+    const currentHour = new Date().getHours();
+    salesData.weedSalesData[currentHour] += 1;
+
+    // Save updated totals
+    localStorage.setItem("totalSales", salesData.totalSales);
+    localStorage.setItem("totalRevenue", salesData.totalRevenue);
+    localStorage.setItem("totalCustomers", salesData.totalCustomers);
+    localStorage.setItem("totalGramsSold", salesData.totalGramsSold);
+    localStorage.setItem("totalCardSales", salesData.totalCardSales);
+    localStorage.setItem("totalCashSales", salesData.totalCashSales);
+    localStorage.setItem("weedSalesData", JSON.stringify(salesData.weedSalesData));
+
+    updateUI();
+}
+
+
+        // Check for new sales
+function checkForNewSales() {
+    const saleDataStr = localStorage.getItem("latestSale");
+    if (saleDataStr) {
+        try {
+            const saleData = JSON.parse(saleDataStr);
+            if (saleData && saleData.timestamp) {
+                updateStatsOnSale(saleData);
+                localStorage.removeItem("latestSale");
+                
+                // Also update transactions list
+                const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+                localStorage.setItem("transactions", JSON.stringify(transactions));
+            }
+        } catch (e) {
+            console.error("Error parsing sale data:", e);
+        }
+    }
+}
+
+        setInterval(checkForNewSales, 1000);
+
+        // Handle form submission for adding a new product
+        document.getElementById("addProductForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const productName = document.getElementById("productName").value;
+            const weedCategory = document.getElementById("weedCategory").value;
+            const productPrice = document.getElementById("productPrice").value;
+            const productImage = document.getElementById("productImage").files[0];
+
+            if (!productName || !productPrice || !productImage) {
+                alert("Please fill out all fields.");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                const product = {
+                    id: Date.now(),
+                    name: productName,
+                    type: weedCategory,
+                    price: productPrice,
+                    image: reader.result,
+                    salesCount: 0
+                };
+
+                let products = JSON.parse(localStorage.getItem("products")) || [];
+                products.push(product);
+                localStorage.setItem("products", JSON.stringify(products));
+
+                alert("Product added successfully!");
+                document.getElementById("addProductForm").reset();
+                loadExistingProducts();
+            };
+            reader.readAsDataURL(productImage);
+        });
+
+        // Load existing products
+        function loadExistingProducts() {
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+            
+            document.getElementById("weedStrainsList").innerHTML = "";
+            document.getElementById("weedEdiblesList").innerHTML = "";
+            document.getElementById("weedAccessoriesList").innerHTML = "";
+
+            products.forEach((product) => {
+                const productCard = document.createElement("div");
+                productCard.className = "product-card";
+
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>Price: R${product.price}</p>
+                    <button onclick="deleteProduct(${product.id})">Delete</button>
+                `;
+
+if (product.type === "strain" || product.type === "joint") {
+    document.getElementById("weedStrainsList").appendChild(productCard);
+} else if (product.type === "edible") {
+    document.getElementById("weedEdiblesList").appendChild(productCard);
+} else if (product.type === "weed_accessory") {
+    document.getElementById("weedAccessoriesList").appendChild(productCard);
+}
+
+            });
+        }
+
+        // Delete product
+        function deleteProduct(productId) {
+            let products = JSON.parse(localStorage.getItem("products"));
+            products = products.filter(product => product.id !== productId);
+            localStorage.setItem("products", JSON.stringify(products));
+            loadExistingProducts();
+        }
+
+        // Update price label
+        function updatePriceLabel() {
+            const weedCategory = document.getElementById("weedCategory").value;
+            const priceLabel = document.getElementById("priceLabel");
+
+            priceLabel.textContent = weedCategory === "strain" ? "Price per Gram (R):" : "Price per Unit (R):";
+        }
+
+        // Reset sales data
+function resetSalesData() {
+    if (!confirm("Are you sure you want to reset all sales data?")) return;
+
+    salesData = {
+        totalSales: 0,
+        totalRevenue: 0,
+        totalCustomers: 0,
+        totalGramsSold: 0,
+        totalCardSales: 0,
+        totalCashSales: 0,
+        weedSalesData: new Array(24).fill(0)
+    };
+
+    localStorage.removeItem("latestSale");
+    localStorage.removeItem("allSales");
+    localStorage.removeItem("transactions"); // <-- important
+
+    localStorage.setItem("totalSales", 0);
+    localStorage.setItem("totalRevenue", 0);
+    localStorage.setItem("totalCustomers", 0);
+    localStorage.setItem("totalGramsSold", 0);
+    localStorage.setItem("totalCardSales", 0);
+    localStorage.setItem("totalCashSales", 0);
+    localStorage.setItem("weedSalesData", JSON.stringify(salesData.weedSalesData));
+
+    updateUI();
+    alert("Sales data and transactions history have been reset!");
+}
+
+        // Initialize on page load
+        window.onload = function () {
+            updatePriceLabel();
+            updateUI();
+            loadExistingProducts();
+        };
+    </script>
+</body>
+</html>

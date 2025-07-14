@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canna POS System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* POS System Styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                  url('./assets/weed.jpg') no-repeat center center/cover;
+      position: relative;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    /* POS Header */
+    .pos-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      background: rgba(0, 100, 0, 0.8);
+      color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      height: 70px;
+      width: auto;
+      margin-right: 15px;
+    }
+
+    .business-name {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .datetime {
+      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    /* POS Main Content */
+    .pos-main {
+      display: flex;
+      flex: 1;
+      padding: 20px;
+    }
+
+    .pos-actions {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      gap: 20px;
+    }
+
+    /* POS Buttons */
+    .pos-btn {
+      width: 80%;
+      max-width: 500px;
+      padding: 25px;
+      font-size: 26px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      color: white;
+      border-radius: 12px;
+      background: rgba(0, 128, 0, 0.7);
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pos-btn::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0) 60%
+      );
+      transform: rotate(30deg);
+      transition: all 0.5s ease;
+    }
+
+    .pos-btn:hover {
+      background: rgba(0, 160, 0, 0.9);
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .pos-btn:hover::before {
+      left: 100%;
+    }
+
+    .pos-btn:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .pos-btn i {
+      font-size: 32px;
+    }
+
+    /* Add decorative elements to make it look more balanced */
+    .decorative-line {
+      width: 80%;
+      max-width: 500px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 15px 0;
+    }
+
+    .welcome-message {
+      color: white;
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Admin Button */
+    .admin-btn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      background: rgba(50, 50, 50, 0.8);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .admin-btn:hover {
+      background: rgba(70, 70, 70, 0.9);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .pos-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+      
+      .datetime {
+        align-items: center;
+      }
+      
+      .pos-btn {
+        width: 90%;
+        padding: 22px;
+        font-size: 22px;
+      }
+      
+      .welcome-message {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .business-name {
+        font-size: 20px;
+      }
+      
+      .pos-btn {
+        font-size: 20px;
+        padding: 20px;
+      }
+      
+      .pos-btn i {
+        font-size: 26px;
+      }
+      
+      .welcome-message {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- POS Header -->
+    <div class="pos-header">
+      <div class="logo-container">
+      </div>
+      <div class="datetime">
+        <div id="current-date"></div>
+        <div id="current-time"></div>
+      </div>
+    </div>
+    
+    <!-- POS Main Content -->
+    <div class="pos-main">
+      <div class="pos-actions">
+        <div class="welcome-message">Welcome To Growing Green POS<br><br>Make A New Sale</div>
+        <div class="decorative-line"></div>
+        
+        <button class="pos-btn" onclick="window.location.href='420sale.html'">
+          <i class="fas fa-cannabis"></i>
+          Cannabis Products
+        </button>
+        
+        <div class="decorative-line"></div>
+      </div>
+    </div>
+    
+    <!-- Admin Button -->
+    <button class="admin-btn" onclick="window.location.href='admin.html'">
+      <i class="fas fa-lock"></i>
+      Admin Panel
+    </button>
+  </div>
+
+  <script>
+    // Update date and time
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US');
+    }
+    
+    // Update every second
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(function() {
+          console.log('Service Worker Registered');
+        });
+    }
+    
+    // Add a subtle animation to the main button on load
+    document.addEventListener('DOMContentLoaded', function() {
+      const mainBtn = document.querySelector('.pos-btn');
+      setTimeout(() => {
+        mainBtn.style.transform = 'translateY(-3px) scale(1.03)';
+        setTimeout(() => {
+          mainBtn.style.transform = '';
+        }, 300);
+      }, 500);
+    });
+  </script>
+</body>
+</html>

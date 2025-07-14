@@ -1,0 +1,593 @@
+<style>
+    /* Fade-in animation */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Fade-in up animation */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Apply fade-in effect to the payment popups */
+    .payment-popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.8s ease;
+    }
+
+    /* Apply fade-in up effect to the product cards and checkout section */
+    .product-card,
+    .checkout-section {
+        animation: fadeInUp 0.8s ease;
+    }
+
+    /* Rest of your existing CSS */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
+        margin: 0;
+        padding: 0;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    h1 {
+        color: #ffcc00;
+        margin-top: 20px;
+    }
+
+    .search-box {
+        margin: 20px 0;
+        padding: 10px;
+        width: 300px;
+        border-radius: 5px;
+        border: none;
+        font-size: 1rem;
+    }
+
+    .category-section {
+        width: 100%;
+        max-width: 1200px;
+        margin-bottom: 20px;
+    }
+
+    .category-section h2 {
+        color: #ffcc00;
+        margin-bottom: 10px;
+        margin-left: 4%;
+    }
+
+    .product-list {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ffcc00 #2a2a2a;
+    }
+
+    .product-list::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .product-list::-webkit-scrollbar-thumb {
+        background-color: #ffcc00;
+        border-radius: 4px;
+    }
+
+    .product-list::-webkit-scrollbar-track {
+        background-color: #2a2a2a;
+    }
+
+    .product-card {
+        background: linear-gradient(135deg, #2a2a2a, #404040);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        width: 200px;
+        text-align: center;
+        position: relative;
+        flex: 0 0 auto;
+    }
+
+    .product-card img {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .product-card h3 {
+        font-size: 1rem;
+        margin: 0;
+        color: #ffcc00;
+    }
+
+    .product-card p {
+        font-size: 0.9rem;
+        margin: 5px 0;
+    }
+
+    .add-to-cart {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-to-cart:hover {
+        background: #388E3C;
+    }
+
+    .checkout-section {
+        width: 100%;
+        max-width: 800px;
+        background: linear-gradient(135deg, #2a2a2a, #404040);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+        margin-top: 20px;
+        overflow-y: auto;
+        max-height: 400px;
+    }
+
+    .checkout-section h2 {
+        color: #ffcc00;
+        margin-bottom: 15px;
+    }
+
+    .checkout-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .checkout-item:last-child {
+        border-bottom: none;
+    }
+
+    .checkout-item img {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        margin-right: 10px;
+    }
+
+    .checkout-item-details {
+        flex: 1;
+    }
+
+    .checkout-item-details h3 {
+        margin: 0;
+        font-size: 1rem;
+        color: #ffcc00;
+    }
+
+    .checkout-item-details p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .checkout-total {
+        text-align: right;
+        margin-top: 20px;
+        font-size: 1.2rem;
+        color: #ffcc00;
+    }
+
+    .checkout-button {
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .checkout-button:hover {
+        background: #388E3C;
+    }
+
+    .payment-popup-content {
+        background: #333;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .payment-popup-content h2 {
+        color: #ffcc00;
+    }
+
+    .payment-popup-content input {
+        padding: 10px;
+        margin: 10px 0;
+        width: 100%;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .payment-popup-content button {
+        padding: 10px 20px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .payment-popup-content button:hover {
+        background: #388E3C;
+    }
+
+    .success-message {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #333;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        z-index: 1001;
+    }
+
+    .success-message h2 {
+        color: #ffcc00;
+    }
+
+    .success-message p {
+        color: white;
+    }
+    .remove-from-cart {
+background: #ff4444;
+color: white;
+border: none;
+border-radius: 50%;
+width: 30px;
+height: 30px;
+font-size: 1.2rem;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background-color 0.3s ease;
+}
+
+.remove-from-cart:hover {
+background: #cc0000;
+}
+</style>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>420 Sale</title>
+</head>
+<body>
+    <h1>420 Products</h1>
+    <input type="text" class="search-box" id="searchBox" placeholder="Search products..." />
+
+    <div class="category-section">
+        <h2>Cannabis Strains</h2>
+        <div class="product-list" id="weedStrainsList"></div>
+    </div>
+
+    <div class="category-section">
+        <h2>Edibles</h2>
+        <div class="product-list" id="ediblesList"></div>
+    </div>
+
+    <div class="category-section">
+        <h2>Accessories</h2>
+        <div class="product-list" id="weedAccessoriesList"></div>
+    </div>
+
+    <div class="checkout-section">
+        <h2>Checkout</h2>
+        <div id="checkoutItems"></div>
+        <div class="checkout-total">
+            <span id="totalAmount">0.00</span> min
+        </div>
+        <button class="checkout-button" onclick="openPaymentPopup()">Confirm Purchase</button>
+    </div>
+
+    <div class="payment-popup" id="paymentPopup">
+        <div class="payment-popup-content">
+            <h2>Payment Method</h2>
+            <button onclick="handleCashPayment()">Cash</button>
+            <button onclick="handleCardPayment()">Card</button>
+        </div>
+    </div>
+
+    <div class="payment-popup" id="cashPaymentPopup">
+        <div class="payment-popup-content">
+            <h2>Cash Payment</h2>
+            <label for="cashAmount">Amount Received:</label>
+            <input type="number" id="cashAmount" placeholder="Enter amount" />
+            <button onclick="completeCashPayment()">Complete Payment</button>
+        </div>
+    </div>
+
+    <div class="payment-popup" id="cardPaymentPopup">
+        <div class="payment-popup-content">
+            <h2>Card Payment</h2>
+            <button onclick="completeCardPayment()">Confirm Card Payment</button>
+        </div>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        <h2>Sale Complete</h2>
+        <p>Redirecting back to POS in <span id="countdown">5</span> seconds...</p>
+    </div>
+
+<script>
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+  const weedStrains = products
+  .filter(p => p.type === "strain" || p.type === "joint")
+  .sort((a, b) => {
+    const aIsJoint = a.name.toLowerCase().includes("joint");
+    const bIsJoint = b.name.toLowerCase().includes("joint");
+    if (aIsJoint && !bIsJoint) return -1; // a joint first
+    if (!aIsJoint && bIsJoint) return 1;  // b joint first
+    return 0; // keep original order inside groups
+  });
+
+    const edibles = products.filter(product => product.type === "edible");
+    const weedAccessories = products.filter(product => product.type === "weed_accessory");
+
+    function displayProducts(categoryProducts, containerId) {
+        const productList = document.getElementById(containerId);
+        productList.innerHTML = "";
+        if (categoryProducts.length === 0) {
+            productList.innerHTML = "<p>No products found.</p>";
+        } else {
+            categoryProducts.forEach((product, index) => {
+                const productCard = document.createElement("div");
+                productCard.className = "product-card";
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.price} min</p>
+                    <button class="add-to-cart" onclick="addToCheckout('${product.type}', ${index})">+</button>
+                `;
+                productList.appendChild(productCard);
+            });
+        }
+    }
+
+    displayProducts(weedStrains, "weedStrainsList");
+    displayProducts(edibles, "ediblesList");
+    displayProducts(weedAccessories, "weedAccessoriesList");
+
+    const searchBox = document.getElementById("searchBox");
+    searchBox.addEventListener("input", (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        displayProducts(weedStrains.filter(p => p.name.toLowerCase().includes(searchTerm)), "weedStrainsList");
+        displayProducts(edibles.filter(p => p.name.toLowerCase().includes(searchTerm)), "ediblesList");
+        displayProducts(weedAccessories.filter(p => p.name.toLowerCase().includes(searchTerm)), "weedAccessoriesList");
+    });
+
+    let checkoutItems = [];
+    let totalAmount = 0;
+
+    function addToCheckout(category, index) {
+        let product;
+        if (category === "strain") product = weedStrains[index];
+        else if (category === "edible") product = edibles[index];
+        else if (category === "weed_accessory") product = weedAccessories[index];
+
+        let quantity = prompt(`Enter quantity for ${product.name}:`);
+        if (quantity === null || isNaN(quantity) || quantity <= 0) {
+            alert("Invalid quantity. Please enter a valid number.");
+            return;
+        }
+        quantity = parseFloat(quantity);
+
+        const totalPrice = (product.price * quantity).toFixed(2);
+
+        checkoutItems.push({
+            ...product,
+            quantity: quantity,
+            totalPrice: totalPrice
+        });
+
+        updateCheckoutDisplay();
+    }
+
+    function updateCheckoutDisplay() {
+        const checkoutItemsContainer = document.getElementById("checkoutItems");
+        const totalAmountElement = document.getElementById("totalAmount");
+
+        checkoutItemsContainer.innerHTML = "";
+        totalAmount = 0;
+
+        let smallJoints = checkoutItems.find(item =>
+            item.name.toLowerCase().includes("small joint") && item.quantity == 4);
+        let bigJoints = checkoutItems.find(item =>
+            item.name.toLowerCase().includes("big joint") && item.quantity == 4);
+
+checkoutItems.forEach((item, index) => {
+    let itemPrice = item.totalPrice;
+
+    if (item.name.toLowerCase().includes("small joint")) {
+        if (item.quantity >= 4) {
+            const sets = Math.floor(item.quantity / 4);
+            const remainder = item.quantity % 4;
+            itemPrice = (sets * 100) + (remainder * item.price);
+        }
+    } else if (item.name.toLowerCase().includes("big joint")) {
+        if (item.quantity >= 4) {
+            const sets = Math.floor(item.quantity / 4);
+            const remainder = item.quantity % 4;
+            itemPrice = (sets * 150) + (remainder * item.price);
+        }
+    }
+
+    totalAmount += parseFloat(itemPrice);
+
+            const checkoutItem = document.createElement("div");
+            checkoutItem.className = "checkout-item";
+            checkoutItem.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div class="checkout-item-details">
+                    <h3>${item.name}</h3>
+                    <p>Quantity: ${item.quantity} units</p>
+                    <p>${parseFloat(itemPrice).toFixed(2)} min</p>
+                </div>
+                <button class="remove-from-cart" onclick="removeFromCheckout(${index})">×</button>
+            `;
+            checkoutItemsContainer.appendChild(checkoutItem);
+        });
+
+        totalAmountElement.textContent = totalAmount.toFixed(2);
+    }
+
+    function removeFromCheckout(index) {
+        checkoutItems.splice(index, 1);
+        updateCheckoutDisplay();
+    }
+
+    function openPaymentPopup() {
+        if (checkoutItems.length === 0) {
+            alert("Your cart is empty. Add products to checkout.");
+            return;
+        }
+        document.getElementById("paymentPopup").style.display = "flex";
+    }
+
+    function handleCashPayment() {
+        document.getElementById("paymentPopup").style.display = "none";
+        document.getElementById("cashPaymentPopup").style.display = "flex";
+    }
+
+    function handleCardPayment() {
+        document.getElementById("paymentPopup").style.display = "none";
+        document.getElementById("cardPaymentPopup").style.display = "flex";
+    }
+
+    function completeCashPayment() {
+        const cashAmount = parseFloat(document.getElementById("cashAmount").value);
+        if (isNaN(cashAmount)) {
+            alert("Please enter a valid amount.");
+            return;
+        }
+        if (cashAmount < totalAmount) {
+            alert("Insufficient amount received.");
+            return;
+        }
+        alert(`Payment successful! Change: R${(cashAmount - totalAmount).toFixed(2)}`);
+        saveTransactionData("cash");
+        showSuccessMessage();
+    }
+
+    function completeCardPayment() {
+        alert("Card payment confirmed. Purchase complete!");
+        saveTransactionData("card");
+        showSuccessMessage();
+    }
+
+function saveTransactionData(paymentMethod) {
+    // Calculate grams sold (only for loose cannabis, not joints/edibles/accessories)
+    const gramsSold = checkoutItems.reduce((total, item) => {
+        if (item.type === "strain" && !item.name.toLowerCase().includes("joint")) {
+            return total + item.quantity;
+        }
+        return total;
+    }, 0);
+
+    const transactionData = {
+        customerId: `CUST-${Date.now()}`,
+        products: checkoutItems.map(item => ({
+            name: item.name,
+            type: item.type,
+            quantity: item.quantity,
+            price: item.price, // Add this line
+            totalPrice: item.totalPrice
+        })),
+        totalAmount: totalAmount,
+        gramsSold: gramsSold, // Add this line
+        paymentMethod: paymentMethod,
+        time: new Date().toISOString()
+    };
+
+    // Save to transactions history
+    const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+    transactions.push(transactionData);
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+
+    // Save as latest sale for admin panel
+    localStorage.setItem("latestSale", JSON.stringify({
+        totalAmount: totalAmount,
+        products: transactionData.products,
+        gramsSold: gramsSold,
+        paymentMethod: paymentMethod,
+        timestamp: transactionData.time
+    }));
+}
+
+    function showSuccessMessage() {
+        const successMessage = document.getElementById("successMessage");
+        const countdownElement = document.getElementById("countdown");
+        successMessage.style.display = "block";
+
+        let countdown = 5;
+        const interval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(interval);
+                resetCheckout();
+                window.location.href = "index.html";
+            }
+        }, 1000);
+    }
+
+    function resetCheckout() {
+        checkoutItems = [];
+        totalAmount = 0;
+        updateCheckoutDisplay();
+        document.getElementById("cashPaymentPopup").style.display = "none";
+        document.getElementById("cardPaymentPopup").style.display = "none";
+        document.getElementById("successMessage").style.display = "none";
+    }
+</script>
+</body>
+</html>
